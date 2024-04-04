@@ -18,6 +18,11 @@ export default function Group({ navigation }) { //recebe navigation
 
   return (
     <ScrollView style={styles.container}>
+      {/* Mensagem de saudação */}
+      <View style={styles.greetingContainer}>
+        <Text style={styles.greetingText}>Olá professor, aqui estão todos os seus grupos escolares:</Text>
+      </View>
+
       {/* Mapeia minha Api fake, grupo representa os elementos */}
       {callWorks.map((group) => (
         //Botão principal
@@ -41,14 +46,6 @@ export default function Group({ navigation }) { //recebe navigation
         </TouchableOpacity>
       ))}
 
-      {/*
-      {selectedGroup && (
-        <View style={styles.selectedGroupContainer}>
-          <Text>{selectedGroup.name}</Text>
-        </View>
-      //)}
-      */}
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -67,6 +64,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 10,
+  },
+  greetingContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  greetingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   button: {
     flexDirection: 'row',
