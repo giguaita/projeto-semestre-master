@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import db from '../../services/firebaseConf';
+import { collection, addDoc } from "firebase/firestore"; 
 
 const CadastroScreen = () => {
   const navigation = useNavigation(); // Obtém o objeto de navegação
@@ -17,7 +19,7 @@ const CadastroScreen = () => {
         Alert.alert('Erro de cadastro', 'Por favor, insira um e-mail válido do IFPR.');
         return; // Impede o cadastro se o e-mail não for válido
       }
-  
+
       // Salva o e-mail e a senha no AsyncStorage
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('password', password);
@@ -28,6 +30,16 @@ const CadastroScreen = () => {
       // Exibe um alerta em caso de erro ao acessar o AsyncStorage
       Alert.alert('Erro', 'Ocorreu um erro ao tentar fazer o cadastro.');
       console.error('Error:', error);
+    }
+    // Add banco de dados
+    try {
+      const docRef = await addDoc(collection(db,"usuarios" ), {
+        email,
+        password
+     });
+    console.log("Document written with ID: ", docRef.id);} 
+    catch (e) {
+      console.error("Error adding document: ", e);
     }
   };
   

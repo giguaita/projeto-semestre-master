@@ -2,14 +2,34 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { collection, query, where, getDocs } from "firebase/firestore";
+import db from '../../services/firebaseConf';
+
 
 const LoginScreen = () => {
+
+
   const navigation = useNavigation();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+
   const handleLogin = async () => {
+       // Banco de Dados
+       const usuarios = collection(db, "usuarios");
+       const q = query(usuarios, where("email", "==", email));
+       
+       const dados = await getDocs(q)
+       dados.forEach(dado =>{
+         console.log(dado.data())
+         if (dado.data().password == password){
+         } else{
+           console.log("senha incorreta")
+         }
+       });
+
     try {
       // Recupera as credenciais armazenadas no AsyncStorage
       const storedEmail = await AsyncStorage.getItem('email');
@@ -36,8 +56,10 @@ const LoginScreen = () => {
     }
   };
   
-  const handleCadastroPress = () => {
+  const handleCadastroPress = async () => {
     navigation.navigate('Cadastro');
+
+ 
   };
 
   return (
